@@ -6,9 +6,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Serilog;
 
-Console.WriteLine("Hello, World!");
-
-
 var builder =
     Host.CreateDefaultBuilder(args)
         .UseSystemd()
