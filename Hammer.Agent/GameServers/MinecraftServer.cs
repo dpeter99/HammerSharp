@@ -19,28 +19,23 @@ public class MinecraftServer
 
     private ProcessStartInfo GetStartInfo()
     {
-        //ProcessStartInfo("/usr/bin/sh -c ");
-        
-        var s = new ProcessStartInfo("java", new []
+        var linux = new ProcessStartInfo("/usr/bin/sh", new []
         {
-            //"java"
-            "-Xmx1024M",
-            "-Xms1024M",
-            "-jar",
-            _serverJar.FullName,
-            "nogui",
+            "-c",
+            "nohup /usr/bin/java"+
+            " -Xmx1024M" +
+            " -Xms1024M" +
+            " -jar " +
+            _serverJar.FullName +
+            "" +
+            " &"
         })
         {
             WorkingDirectory = _serverFolder.FullName,
-            CreateNoWindow = true,
             UseShellExecute = true,
-            WindowStyle = ProcessWindowStyle.Hidden,
-            RedirectStandardError = false,
-            RedirectStandardInput = false,
-            RedirectStandardOutput = false,
         };
 
-        return s;
+        return linux;
     }
     
     public Task StartServer()
@@ -48,8 +43,13 @@ public class MinecraftServer
         MakeEula();
 
         Process p = Process.Start(GetStartInfo())!;
-
         return Task.CompletedTask;
+    }
+
+    public Task StopServer()
+    {
+        
+        
     }
     
     void MakeEula()

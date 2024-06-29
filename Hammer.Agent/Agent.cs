@@ -29,7 +29,7 @@ public class Agent : IHostedService
     public Task StartAsync(CancellationToken cancellationToken)
     { 
         server.StartServer();
-        return Task.Delay(TimeSpan.FromSeconds(30));
+        return Task.Delay(TimeSpan.FromSeconds(15));
     }
 
     public Task StopAsync(CancellationToken cancellationToken)
