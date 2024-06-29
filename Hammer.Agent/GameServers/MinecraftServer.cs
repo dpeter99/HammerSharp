@@ -45,12 +45,6 @@ public class MinecraftServer
         Process p = Process.Start(GetStartInfo())!;
         return Task.CompletedTask;
     }
-
-    public Task StopServer()
-    {
-        
-        
-    }
     
     void MakeEula()
     {
