@@ -20,6 +20,7 @@ var builder =
             services.Configure<GameConfiguration>(hostContext.Configuration.GetSection("Game"));
             services.Configure<AgentConfiguration>(hostContext.Configuration.GetSection("Agent"));
         });
+        
 
 var host = builder.Build();
 host.Start();
