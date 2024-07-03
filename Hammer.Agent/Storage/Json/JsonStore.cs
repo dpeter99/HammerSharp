@@ -1,54 +1,73 @@
+using System.Collections.Concurrent;
 using System.Dynamic;
 using System.Text.Json;
 
 namespace Hammer.Agent.Storage.Json;
 
-public abstract class JsonStore<T> : IStore<T>, IDisposable
+public abstract class JsonStore<T> : IStore<string, T>, IDisposable 
 {
-    private readonly DirectoryInfo _folder;
-    private readonly bool _singleFile;
-    protected List<T> _data;
     private readonly FileSystemWatcher _fileWatcher;
 
-    protected Dictionary<string, T> Store { get; } = new();
+    protected ConcurrentDictionary<string, T> Store { get; } = new();
 
-    protected bool _addingFile;
+    protected bool AddingFile;
 
-    public JsonStore(DirectoryInfo folder, bool singleFile)
+    protected JsonStore(DirectoryInfo folder, bool singleFile)
     {
-        _folder = folder;
-        _singleFile = singleFile;
+        // File watcher
         _fileWatcher = new FileSystemWatcher();
         _fileWatcher.Path = folder.FullName;
         _fileWatcher.Filter = "*.json";
         _fileWatcher.NotifyFilter = NotifyFilters.LastWrite | NotifyFilters.FileName | NotifyFilters.DirectoryName;
         _fileWatcher.Changed += OnChanged;
-        _fileWatcher.Created += OnCreated;
+        if (!singleFile)
+            _fileWatcher.Created += OnCreated;
         _fileWatcher.Deleted += OnDeleted;
         
         _fileWatcher.EnableRaisingEvents = true;
-        // File watcher
-
+        
         // Read in each file and deserialize it
+        
+    }
+
+    protected virtual void Initialize(DirectoryInfo folder, bool singleFile)
+    {
+        if (singleFile)
+        {
+            var id = folder.FullName;
+            var item = Deserialize(id);
+            if(item == null) return;
+            HandleAdd(id, item);
+        }
+        else
+        {
+            var files = folder.GetFiles("*.json");
+            foreach (var file in files)
+            {
+                var id = file.FullName;
+                var item = Deserialize(id);
+                if(item == null) continue;
+                HandleAdd(id, item);
+            }
+        }
     }
 
     private void OnDeleted(object sender, FileSystemEventArgs e)
     {
         var id = e.FullPath;
-        var item = Store[id];
-        OnDelete(item);
+        if(!Store.TryGetValue(id, out var item)) return;
+        Delete(id, item);
 
     }
 
     private void OnCreated(object sender, FileSystemEventArgs e)
     {
         // ToDo: Find a good way to check if File is not written anymore
-        if(_addingFile) return;
+        if(AddingFile) return;
         var id = e.FullPath;
         var file = Deserialize(id);
         if (file == null) return;
-        Store.TryAdd(id, file);
-        OnCreate(file);
+        Add(id, file);
     }
 
     protected T? Deserialize(string path)
@@ -74,53 +93,69 @@ public abstract class JsonStore<T> : IStore<T>, IDisposable
         if (!Store.TryAdd(id, file))
         {
             Store[id] = file;
-            OnChange(file);
+            Change(id, file);
         }
         else
         {
-            OnCreate(file);
+            Add(id, file);
         }
     }
 
-    protected void OnDelete(T item)
-    {
-        
-    }
-
-    protected void OnCreate(T item)
-    {
-        
-    }
-
-    protected void OnChange(T item)
-    {
-        
-    }
-    
-
     public virtual IEnumerable<T> GetAll() => Store.Values;
 
-    public void Add(T newItem)
+    public void Add(string id, T newItem)
     {
-        _addingFile = true;
+        AddingFile = !Store.ContainsKey(id);
 
-        HandleAdd(newItem);
+        HandleAdd(id, newItem);
         
-        _addingFile = false;
+        AddingFile = false;
     }
 
-    public abstract void Change(T item);
+    public virtual void Change(string id, T item)
+    {
+        Serialize(item, id);
+        Store[id] = item;
+    }
 
-    public abstract void Delete(T item);
+    public virtual void Delete(string id, T item)
+    {
+        var result = Store.Remove(id, out _);
+        if (result)
+        {
+            new FileInfo(id).Delete();
+        }
+    }
+
+    protected virtual void HandleAdd(string id, T newItem)
+    {
+        Store.TryAdd(id, newItem);
+        if (AddingFile)
+        {
+            Serialize(newItem, id);
+        }
+    }
+
+
+    ~JsonStore()
+    {
+        Dispose(false);
+    }
     
-    protected abstract void HandleAdd(T newItem);
-
-
     public void Dispose()
     {
-        _fileWatcher.Created -= OnCreated;
-        _fileWatcher.Deleted -= OnDeleted;
-        _fileWatcher.Changed -= OnChanged;
-        _fileWatcher.Dispose();
+        Dispose(true);
+        GC.SuppressFinalize(this);
+    }
+
+    protected virtual void Dispose(bool disposing)
+    {
+        if (disposing)
+        {
+            _fileWatcher.Created -= OnCreated;
+            _fileWatcher.Deleted -= OnDeleted;
+            _fileWatcher.Changed -= OnChanged;
+            _fileWatcher.Dispose();
+        }
     }
 }
