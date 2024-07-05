@@ -27,11 +27,11 @@ class McServerState : ResourceState
     public override bool IsRunning => Process.IsRunning;
 }
 
-class MCServerController : Controller<McServer>
+class McServerController : Controller<McServer>
 {
     private readonly ProcessManager _processManager;
 
-    public MCServerController(ProcessManager processManager)
+    public McServerController(ProcessManager processManager)
     {
         _processManager = processManager;
     }
