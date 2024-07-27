@@ -19,9 +19,9 @@ public class ResourceStore : IResourceStore
                     "-Xmx1024M",
                     "-Xms1024M",
                     "-jar",
-                    "/home/dpeter99/Documents/Projects/Hammer/test_folder/versions/minecraft_server.1.21.jar"
+                    "/home/unbekannt/RiderProjects/HammerSharpRunTest/versions/server.jar"
                 ],
-                workingDirectory: "/home/dpeter99/Documents/Projects/Hammer/test_folder/test"
+                workingDirectory: "/home/unbekannt/RiderProjects/HammerSharpRunTest/test"
             ),
             new ProcessState()
             {

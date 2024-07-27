@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+message Server {
+  bool running = 1;
+  string server_name = 2;
+  string Type = 3;
+}
+
+message ListArgs {
+  
+}
+
+service ServerLister {
+  rpc GetServers (ListArgs) returns (stream Server);
+}

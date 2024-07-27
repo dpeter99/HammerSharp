@@ -6,6 +6,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Thinking", "Thinking\Thinki
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hammer.Agent.Test", "Hammer.Agent.Test\Hammer.Agent.Test.csproj", "{8393C725-B914-4906-B532-3D400027126C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hammer.Agent.Cli", "Hammer.Agent.Cli\Hammer.Agent.Cli.csproj", "{12E38EE5-FD30-4C65-94ED-E3CD1A372543}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Resources", "Resources\Resources.csproj", "{F82B4C7E-B901-49E9-96A2-D7A52960F21E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -24,5 +28,13 @@ Global
 		{8393C725-B914-4906-B532-3D400027126C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8393C725-B914-4906-B532-3D400027126C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8393C725-B914-4906-B532-3D400027126C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{12E38EE5-FD30-4C65-94ED-E3CD1A372543}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{12E38EE5-FD30-4C65-94ED-E3CD1A372543}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{12E38EE5-FD30-4C65-94ED-E3CD1A372543}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{12E38EE5-FD30-4C65-94ED-E3CD1A372543}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F82B4C7E-B901-49E9-96A2-D7A52960F21E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F82B4C7E-B901-49E9-96A2-D7A52960F21E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F82B4C7E-B901-49E9-96A2-D7A52960F21E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F82B4C7E-B901-49E9-96A2-D7A52960F21E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
