@@ -3,15 +3,8 @@ using System.Net.Sockets;
 
 namespace Hammer.Agent.Cli.IPC.UDS;
 
-public class UnixDomainSocketsConnectionFactory
+public class UnixDomainSocketsConnectionFactory(EndPoint endPoint)
 {
-    private readonly EndPoint endPoint;
-
-    public UnixDomainSocketsConnectionFactory(EndPoint endPoint)
-    {
-        this.endPoint = endPoint;
-    }
-
     public async ValueTask<Stream> ConnectAsync(SocketsHttpConnectionContext _,
         CancellationToken cancellationToken = default)
     {
@@ -19,7 +12,7 @@ public class UnixDomainSocketsConnectionFactory
 
         try
         {
-            await socket.ConnectAsync(this.endPoint, cancellationToken).ConfigureAwait(false);
+            await socket.ConnectAsync(endPoint, cancellationToken).ConfigureAwait(false);
             return new NetworkStream(socket, true);
         }
         catch

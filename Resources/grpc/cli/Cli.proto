@@ -3,7 +3,7 @@ syntax = "proto3";
 message Server {
   bool running = 1;
   string server_name = 2;
-  string Type = 3;
+  string type = 3;
 }
 
 message ListArgs {
