@@ -49,10 +49,12 @@ public class ResourceManager
 public class ResourceManagerStartup : IHostedService
 {
     private readonly ResourceManager _resourceManager;
+    private readonly IHostApplicationLifetime _appLifetime;
 
     public ResourceManagerStartup(ResourceManager resourceManager, IHostApplicationLifetime appLifetime)
     {
         _resourceManager = resourceManager;
+        _appLifetime = appLifetime;
     }
     
     public async Task StartAsync(CancellationToken cancellationToken)
@@ -63,6 +65,6 @@ public class ResourceManagerStartup : IHostedService
 
     public Task StopAsync(CancellationToken cancellationToken)
     {
-        throw new NotImplementedException();
+        return Task.CompletedTask;
     }
 }

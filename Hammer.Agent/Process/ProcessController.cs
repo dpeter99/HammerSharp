@@ -1,8 +1,10 @@
 using System.Diagnostics;
+using System.Resources;
 using Hammer.Agent.Controller;
 using Hammer.Agent.HostInterface;
 using Hammer.Agent.Resource;
 using Microsoft.Extensions.Logging;
+using ResourceManager = Hammer.Agent.Resource.ResourceManager;
 
 namespace Hammer.Agent.Process;
 

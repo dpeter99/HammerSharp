@@ -1,8 +1,9 @@
+using System.Resources;
 using Hammer.Agent.Controller;
 using Hammer.Agent.Process;
 using Hammer.Agent.Resource;
-using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using ResourceManager = Hammer.Agent.Resource.ResourceManager;
 
 namespace Hammer.Agent.McServer;
 

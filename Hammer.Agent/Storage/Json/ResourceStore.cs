@@ -1,5 +1,7 @@
 namespace Hammer.Agent.Storage.Json;
 
+using Hammer.Agent.Resource;
+
 public class ResourceStore : JsonStore<Resource>
 {
 

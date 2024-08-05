@@ -2,15 +2,17 @@ namespace Hammer.Agent.Resource;
 
 public class ResourceTypeId
 {
-    private string Name;
+    private string _name;
 
     public ResourceTypeId(string name)
     {
-        Name = name;
+        _name = name;
     }
+
+    public string Name => _name;
 
     public override string ToString()
     {
-        return Name;
+        return _name;
     }
 }

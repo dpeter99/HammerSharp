@@ -1,3 +1,5 @@
+using System.Resources;
+
 namespace Hammer.Agent.Controller;
 
 using Hammer.Agent.Resource;

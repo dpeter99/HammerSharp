@@ -3,7 +3,6 @@ using Microsoft.Extensions.Logging;
 
 namespace Hammer.Agent.Controller;
 
-using Hammer.Agent.Resource;
 
 public class ControllerRegistry : IHostedService
 {
