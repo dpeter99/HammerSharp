@@ -10,10 +10,10 @@ public class ResourceManager
 {
     private readonly IResourceStore _store;
 
-    public Subject<ResourceEvent> OnRecover = new();
-    public Subject<ResourceEvent> OnAdd = new();
-    public Subject<ResourceEvent> OnChange = new();
-    public Subject<ResourceEvent> OnDelete = new();
+    public Subject<ResourceEvent> OnRecover { get; } = new();
+    public Subject<ResourceEvent> OnAdd { get; } = new();
+    public Subject<ResourceEvent> OnChange { get; } = new();
+    public Subject<ResourceEvent> OnDelete { get; } = new();
 
     public IQueryable<Resource> Resources => _store.Resources.AsQueryable();
     
@@ -25,7 +25,7 @@ public class ResourceManager
 
     private void ResourceChanged(Resource resource)
     {
-        
+        OnChange.OnNext(new ResourceEvent(resource, this));
     }
 
     public async Task StartUp()
@@ -60,7 +60,6 @@ public class ResourceManagerStartup : IHostedService
     public async Task StartAsync(CancellationToken cancellationToken)
     {
         await _resourceManager.StartUp();
-        await Task.Delay(10000);
     }
 
     public Task StopAsync(CancellationToken cancellationToken)

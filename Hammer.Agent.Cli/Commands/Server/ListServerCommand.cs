@@ -11,17 +11,11 @@ public class ListServerCommand()
 
 public class ListServerCommandOptions: ICommandOptions{}
 
-public class ListServerCommandOptionHandler : ICommandOptionsHandler<ListServerCommandOptions>
+public class ListServerCommandOptionHandler(IAnsiConsole console, IGrpcChannelService grpcChannelService)
+    : ICommandOptionsHandler<ListServerCommandOptions>
 {
-    private readonly IAnsiConsole _console;
-    private readonly GrpcChannel _channel;
+    private readonly GrpcChannel _channel = grpcChannelService.GetChannel();
 
-    public ListServerCommandOptionHandler(IAnsiConsole console, IGrpcChannelService grpcChannelService)
-    {
-        _console = console;
-        _channel = grpcChannelService.GetChannel();
-    }
-    
     public async Task<int> HandleAsync(ListServerCommandOptions options, CancellationToken cancellationToken)
     {
         var client = new ServerLister.ServerListerClient(_channel);
@@ -34,7 +28,7 @@ public class ListServerCommandOptionHandler : ICommandOptionsHandler<ListServerC
         {
             table.AddRow(server.ServerName.EscapeMarkup(), server.Type.EscapeMarkup(), server.Running ? "Y" : "N");
         }
-        _console.Write(table);
+        console.Write(table);
         return 0;
     }
 }

@@ -40,6 +40,7 @@ public class ResourceStore : IResourceStore
     public async Task<bool> Add(Resource resource)
     {
         _resources.Add(resource);
+        ChangeEvent?.Invoke(resource);
         return true;
     }
 
